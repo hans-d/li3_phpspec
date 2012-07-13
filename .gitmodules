@@ -1,0 +1,3 @@
+[submodule "libraries/phpspec"]
+	path = libraries/phpspec
+	url = https://github.com/phpspec/phpspec.git
