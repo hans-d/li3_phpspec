@@ -14,17 +14,26 @@ class Phpspec extends \lithium\console\Command {
      */
     public $formatter = null;
 
+    /**
+     * Run examples that contain
+     */
+    public $example = null;
+
     public function run($path) {
-        if ($this->formatter === true) {
-            $this->formatter = false;
-        };
+        foreach (array('formatter', 'example') as $field) {
+            if ($this->$field === true) {
+                $this->$field = false;
+            };
+        }
         $args = array(
             $path,
             $this->backtrace ? '-b' : '',
-            $this->formatter ? '-f' : '',
-            $this->formatter ?: '',
         );
-        array_filter($args);
+        foreach (array('formatter' => '-f', 'example' => '-e') as $field => $option) {
+            $args[] = $this->$field ? $option : '';
+            $args[] = $this->$field ?: '';
+        }
+        $args = array_filter($args);
         $phpspec = new \PHPSpec\PHPSpec($args);
         $phpspec->execute();
     }
