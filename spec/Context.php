@@ -6,17 +6,13 @@ use lithium\data\Connections;
 
 class Context extends \PHPSpec\Context {
 
-    protected function databaseConnectionsToMock() {
+    protected function connectionsToMock($type = true) {
         $config = Connections::config();
         foreach (array_keys($config) as $name) {
-            switch ($config[$name]['type']) {
-                case 'database':
-                    $config[$name] = array('type' => 'Mock');
-                    break;
+            if ($type === true || $type == $config[$name]['type']) {
+                $config[$name] = array('type' => 'Mock');
             }
         }
         Connections::config($config);
-
     }
-
 }
